@@ -8,6 +8,8 @@ Description: This package provides small (150 x 100) logos for the 30 MLB teams 
 License: GPL (>= 3)
 Encoding: UTF-8
 Depends: R (>= 3.5.0)
+Suggests: Lahman,
+    magick
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.0
 URL: https://github.com/friendly/MLBlogos
