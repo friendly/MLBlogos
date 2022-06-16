@@ -37,6 +37,10 @@ This is a basic example which shows you how to solve a common problem:
 
 ```{r example}
 library(MLBlogos)
-## basic example code
+
+## Information about the logos is contained in the `Logos` data set. The file name of each logo (in PNG format) is contained in the
+## `png` variable. `TeamID` is the matching variable in `Lahman::Teams`.
+data(Logos)
+knitr::kable(Logos[1:15, 1:4])
 ```
 
