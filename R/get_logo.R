@@ -2,7 +2,9 @@
 #'
 #' @param teams a character vector of one or more `TeamID`s
 #' @return A data.frame with columns `teamID`, `name`, `png`
+#' @export
 #' @importFrom dplyr filter select
+#'
 #' @examples
 #' logoInfo(c("TOR", "TEX"))
 #'
