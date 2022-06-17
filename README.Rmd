@@ -7,6 +7,7 @@ output: github_document
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
+  message = FALSE,
   comment = "#>",
   fig.path = "man/figures/README-",
   out.width = "100%"
@@ -16,9 +17,10 @@ knitr::opts_chunk$set(
 # MLBlogos
 
 <!-- badges: start -->
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-The goal of MLBlogos is to provide small (150 x 100) logos for the teams in Major League Baseball
+The MLBlogos package provids small (150 x 100) logos for the teams in Major League Baseball
 (from the 2021 season).
 A possible use is to create tables and graphs of Teams data from the [Lahman package](https://github.com/cdalzell/Lahman).
 
@@ -33,26 +35,36 @@ devtools::install_github("friendly/MLBlogos")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+This is a basic example which shows how to access information about the logos and the images themselves.
 
 ```{r example}
 library(MLBlogos)
 data(Logos)
 library(dplyr)
 
-## Information about the logos is contained in the `Logos` data set. The file name of each logo (in PNG format) is contained in the
-## `png` variable. `TeamID` is the matching variable in `Lahman::Teams`.
+## Information about the logos is contained in the `Logos` data set. The file
+## name of each logo (in PNG format) is contained in the `png` variable.
+## `TeamID` is the matching variable in `Lahman::Teams`.
+
 data(Logos)
-knitr::kable(Logos[1:15, 1:4])
+knitr::kable(Logos[c(1:5, 26:30), 1:4])
 ```
 
-```{r}
-# get the directory of the logo files
+### Retrieving logos
+```{r oneimage, out.width="20%", fig.height=3, fig.align='center'}
+# Get the installed directory of the logo files in the package
 dir <- system.file("png/", package = "MLBlogos")
 
-# select an image
+# Select an image, use `magick::image_read()` to read it from the installed directory
 imagename <- logoInfo(c("TOR"))[, "png"]
 img <- magick::image_read(file.path(dir, imagename))
 print(img)
 ```
+
+Here are all the logos, retrieved from the `inst/png` folder:
+```{r allimages, results='asis'}
+library(glue)
+glue("<img src='", "inst/png/", "{Logos[,'png']}' height=80>")
+```
+
 

@@ -1,7 +1,7 @@
 #' Get logo information for a teams
 #'
-#' @param teams a character vector of one or more `TeamID`s
-#' @return A data.frame with columns `teamID`, `name`, `png`
+#' @param teams A character vector of one or more `TeamID`s
+#' @return      A data.frame with columns `teamID`, `name`, `png`
 #' @export
 #' @importFrom dplyr filter select
 #'
@@ -17,7 +17,7 @@ logoInfo <- function(teams) {
 
 #' Get logo images for teams
 #'
-#' @param teams
+#' @param teams A character vector of one or more `TeamID`s
 #'
 #' @return the image files for the teams
 #' @importFrom magick image_read
