@@ -63,9 +63,11 @@ print(img)
 
 Here are all the logos, retrieved from the `inst/png` folder of the source package.
 For this document they are displayed using HTML `<img >` tags.
-```{r allimages, results='asis'}
+```{r allimages, echo=TRUE, eval=FALSE}
 library(glue)
-glue("<img src='", "inst/png/", "{Logos[,'png']}' alt='{Logos[,'teamID']}' height=80>")
+glue("<img src='", "inst/png/", "{Logos[,'png']}' alt='{Logos[,'teamID']}' height=80 />")
 ```
+
+![](man/figures/README-allimages.png)
 
 
