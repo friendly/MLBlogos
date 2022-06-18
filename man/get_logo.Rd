@@ -7,7 +7,7 @@
 get_logo(teams)
 }
 \arguments{
-\item{teams}{}
+\item{teams}{A character vector of one or more \code{TeamID}s}
 }
 \value{
 the image files for the teams

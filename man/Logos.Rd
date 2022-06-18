@@ -13,10 +13,11 @@ A data frame with 30 observations on the following 5 variables.
 \code{MIN} \code{NYA} \code{NYN} \code{OAK} \code{PHI} \code{PIT} \code{SDN}
 \code{SEA} \code{SFN} \code{SLN} \code{TBA} \code{TEX} \code{TOR}
 \code{WAS}}
-\item{\code{divID}}{a factor with levels \code{C} \code{E} \code{W}}
-\item{\code{name}}{a character vector}
-\item{\code{png}}{name of the PNG logo image in the \code{png} directory, a character vector}
-\item{\code{img_src}}{URL of the GIF file from sportslogos.net, a character vector}
+\item{\code{lgID}}{League: a factor with levels \code{AL}, \code{NL}}
+\item{\code{divID}}{Division: a factor with levels \code{C} \code{E} \code{W}}
+\item{\code{name}}{Team name: a character vector}
+\item{\code{png}}{filename of the PNG logo image in the \code{png} directory, a character vector}
+\item{\code{img_src}}{original URL of the GIF file from sportslogos.net, a character vector}
 }
 }
 \source{

@@ -7,10 +7,11 @@
 logoInfo(teams)
 }
 \arguments{
-\item{teams}{a character vector of one or more \code{TeamID}s}
+\item{teams}{A character vector of one or more \code{TeamID}s}
 }
 \value{
-A data.frame with columns \code{teamID}, \code{name}, \code{png}
+\if{html}{\out{<div class="sourceCode">}}\preformatted{ A data.frame with columns `teamID`, `name`, `png`
+}\if{html}{\out{</div>}}
 }
 \description{
 Get logo information for a teams
