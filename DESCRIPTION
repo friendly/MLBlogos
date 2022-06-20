@@ -1,8 +1,11 @@
 Package: MLBlogos
 Title: Logos for the Major Leagues Baseball Teams in the 2021 Season
-Version: 0.0.0.9000
+Version: 0.0.1
 Authors@R: 
-    person("Michael", "Friendly", , "friendly@yorku.ca", role = c("aut", "cre"),
+    person(given ="Michael", 
+           family = "Friendly",
+           email = "friendly@yorku.ca", 
+           role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-3237-0941"))
 Description: This package provides small (150 x 100) logos for the 30 MLB teams in the 2021 season, provided only for non-commercial use by Chris Creamer of www.sportslogos.net.
 License: GPL (>= 3)
@@ -11,7 +14,6 @@ Depends: R (>= 3.5.0)
 Imports: dplyr,
     magick
 Suggests: Lahman
-LazyData: TRUE
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.0
 URL: https://github.com/friendly/MLBlogos

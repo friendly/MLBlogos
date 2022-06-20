@@ -8,6 +8,7 @@ output: github_document
 knitr::opts_chunk$set(
   collapse = TRUE,
   message = FALSE,
+  warning = FALSE,
   comment = "#>",
   fig.path = "man/figures/README-",
   out.width = "100%"
@@ -47,11 +48,11 @@ library(dplyr)
 ## `TeamID` is the matching variable in `Lahman::Teams`.
 
 data(Logos)
-knitr::kable(Logos[c(1:5, 26:30), 1:4])
+knitr::kable(Logos[c(1:5, 26:30), 1:5])
 ```
 
 ### Retrieving logos
-```{r oneimage, out.width="20%", fig.height=3, fig.align='center'}
+```{r oneimage, out.width="20%", fig.height=3, fig.align='center', fig.show='asis'}
 # Get the installed directory of the logo files in the package
 dir <- system.file("png/", package = "MLBlogos")
 
@@ -63,6 +64,8 @@ print(img)
 
 Here are all the logos, retrieved from the `inst/png` folder of the source package.
 For this document they are displayed using HTML `<img >` tags.
+(Except that in a GitHub they are displayed one-by-one, rather than in an
+array)
 ```{r allimages, echo=TRUE, eval=FALSE}
 library(glue)
 glue("<img src='", "inst/png/", "{Logos[,'png']}' alt='{Logos[,'teamID']}' height=80 />")
@@ -70,4 +73,59 @@ glue("<img src='", "inst/png/", "{Logos[,'png']}' alt='{Logos[,'teamID']}' heigh
 
 ![](man/figures/README-allimages.png)
 
+## Using logos in graphics
+
+This example shows how to use these logos in `ggplot2 graphics.
+It creates a simple bar plot of total team salaries for the 2016 season,
+the last year for which salary data is available. Images
+are plotted using the `ggimage` package.
+
+Load packages and data
+```{r load}
+library(Lahman)
+library(dplyr)
+library(ggplot2)
+library(ggimage)
+
+data(Salaries)
+data(Logos)
+```
+
+Select teams in the National League 
+```{r get-salary}
+# Total team salaries by league, team for 2016 (last year available)
+teamSalaries <- Salaries |>
+  filter(yearID == max(yearID),
+         lgID == "AL") |>
+  group_by(teamID) |>
+  summarise(Salary = sum(as.numeric(salary))) |>
+  arrange(Salary) |>
+  # re-order levels for plotting
+  mutate(teamID = factor(teamID, levels = unique(teamID)))
+```
+
+Get the name of the logo image file for each team:
+```{r get-logos}
+teamSalaries <- teamSalaries |>
+  left_join(Logos, by="teamID") |>
+  mutate(img = system.file(glue::glue("png/{png}"),
+                           package = "MLBlogos")) |>
+  select(teamID, name, Salary, divID, img)
+```
+
+Construct the bar plot:
+```{r salary-bars, out.width="80%"}
+ggplot(teamSalaries,
+       aes(teamID, Salary)) +
+  geom_col(aes(fill=divID)) +
+  scale_y_continuous(labels = scales::label_number(suffix = " M",
+                                                   scale = 1e-6)) +  # millions
+  geom_image(aes(image=img, y = Salary),
+             size=0.09) +
+  ylab("Total Salary (million $") +
+  coord_flip() +
+  theme_bw(base_size=16) +
+  theme(legend.position = c(.9, .2))
+
+```
 
