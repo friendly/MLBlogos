@@ -12,9 +12,10 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 <!-- badges: end -->
 
 The `MLBlogos` package provides small (150 x 100) logos for the teams in
-Major League Baseball (from the 2021 season). Right to use these images
-**only** for non-commercial purposes is kindly provided by Chris Creamer
-of [sportslogos.net](https://www.sportslogos.net).
+Major League Baseball (from the 2021 season). Right to use these
+thumbnail images, **only** for non-commercial purposes, is kindly
+provided by Chris Creamer of
+[sportslogos.net](https://www.sportslogos.net).
 
 The uses are to create tables and graphs of Teams data from the [Lahman
 package](https://github.com/cdalzell/Lahman).
@@ -73,6 +74,9 @@ Of these variables, for each `teamID`,
 -   `name` is the team name
 -   `png` is the filename of the logo in the `inst/png/` folder
 -   `image` is the filename **path** to the logo in the package.
+
+The actual image can be retrieved using `magick::image_read()` or
+`png::readPNG()`.
 
 ``` r
 (toronto <- logoInfo("TOR"))
