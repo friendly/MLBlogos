@@ -11,14 +11,18 @@ README
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-The MLBlogos package provides small (150 x 100) logos for the teams in
-Major League Baseball (from the 2021 season). A possible use is to
-create tables and graphs of Teams data from the [Lahman
+The `MLBlogos` package provides small (150 x 100) logos for the teams in
+Major League Baseball (from the 2021 season). Right to use these images
+**only** for non-commercial purposes is kindly provided by Chris Creamer
+of [sportslogos.net](https://www.sportslogos.net).
+
+The uses are to create tables and graphs of Teams data from the [Lahman
 package](https://github.com/cdalzell/Lahman).
 
 ## Installation
 
-You can install the development version of MLBlogos from
+This package is still experimental, and not on CRAN. You can install the
+current version of `MLBlogos` from
 [GitHub](https://github.com/friendly/MLBlogos) with:
 
 ``` r
@@ -60,23 +64,43 @@ knitr::kable(Logos[c(1:5, 26:30), 1:5])
 
 ### Retrieving logos
 
-``` r
-# Get the installed directory of the logo files in the package
-dir <- system.file("png/", package = "MLBlogos")
+The `logoInfo` function allows you to select images from the installed
+`inst/png/` folder. It takes a vector of one or more `teamID` and
+returns selected variables from the `Logos` table.
 
-# Select an image, use `magick::image_read()` to read it from the installed directory
-imagename <- logoInfo(c("TOR"))[, "png"]
-img <- magick::image_read(file.path(dir, imagename))
+Of these variables, for each `teamID`,
+
+-   `name` is the team name
+-   `png` is the filename of the logo in the `inst/png/` folder
+-   `image` is the filename **path** to the logo in the package.
+
+``` r
+(toronto <- logoInfo("TOR"))
+#>    teamID              name                   png
+#> 29    TOR Toronto Blue Jays Toronto_Blue_Jays.png
+#>                                                      image
+#> 29 C:/R/R-4.1.2/library/MLBlogos/png/Toronto_Blue_Jays.png
+
+# Get the filename for the Toronto Blue Jays logo. Read it using `magick::image_read()`
+# and display it.
+imagepath <- toronto[, "image"]
+img <- magick::image_read(imagepath)
 print(img)
-#> # A tibble: 0 x 7
-#> # ... with 7 variables: format <chr>, width <int>, height <int>,
-#> #   colorspace <chr>, matte <lgl>, filesize <int>, density <chr>
+#> # A tibble: 1 x 7
+#>   format width height colorspace matte filesize density
+#>   <chr>  <int>  <int> <chr>      <lgl>    <int> <chr>  
+#> 1 PNG      150    100 sRGB       TRUE      5750 38x38
 ```
+
+<img src="man/figures/README-oneimage-1.png" width="20%" style="display: block; margin: auto;" />
+
+### All logos
 
 Here are all the logos, retrieved from the `inst/png` folder of the
 source package. For this document they are displayed using HTML `<img >`
 tags. (Except that in a GitHub document they are displayed one-by-one,
-rather than in an array.)
+rather than in an array. I cheated a bit and took a screenshot of how it
+appears in the R Studio HTML file.)
 
 ``` r
 library(glue)
@@ -135,7 +159,8 @@ teamSalaries <- teamSalaries |>
   select(teamID, name, Salary, divID, img)
 ```
 
-Construct the bar plot:
+Construct the bar plot. It took a bit of fiddling to size and position
+the logos within the bars.
 
 ``` r
 ggplot(teamSalaries,
@@ -143,9 +168,13 @@ ggplot(teamSalaries,
   geom_col(aes(fill=divID)) +
   scale_y_continuous(labels = scales::label_number(suffix = " M",
                                                    scale = 1e-6)) +  # millions
-  geom_image(aes(image=img, y = Salary),
-             size=0.09) +
-  ylab("Total Salary (million $)") +
+  scale_fill_discrete(
+    labels = c("Central", "East", "West")
+    ) +
+  geom_image(aes(image=img, y = .6 *Salary),
+             size=0.08) +
+  labs(y = "Total Salary",
+       fill = "Division") +
   coord_flip() +
   theme_bw(base_size=16) +
   theme(legend.position = c(.9, .2))

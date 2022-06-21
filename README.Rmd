@@ -24,13 +24,15 @@ knitr::opts_chunk$set(
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-The MLBlogos package provides small (150 x 100) logos for the teams in Major League Baseball
-(from the 2021 season).
-A possible use is to create tables and graphs of Teams data from the [Lahman package](https://github.com/cdalzell/Lahman).
+The `MLBlogos` package provides small (150 x 100) logos for the teams in Major League Baseball
+(from the 2021 season). Right to use these images **only** for non-commercial purposes is kindly provided by Chris Creamer of [sportslogos.net](https://www.sportslogos.net).
+
+The uses are to create tables and graphs of Teams data from the [Lahman package](https://github.com/cdalzell/Lahman).
 
 ## Installation
 
-You can install the development version of MLBlogos from [GitHub](https://github.com/friendly/MLBlogos) with:
+This package is still experimental, and not on CRAN.
+You can install the current version of `MLBlogos` from [GitHub](https://github.com/friendly/MLBlogos) with:
 
 ``` r
 # install.packages("devtools")
@@ -55,20 +57,32 @@ knitr::kable(Logos[c(1:5, 26:30), 1:5])
 ```
 
 ### Retrieving logos
-```{r oneimage, out.width="20%", fig.height=3, fig.align='center', fig.show='asis'}
-# Get the installed directory of the logo files in the package
-dir <- system.file("png/", package = "MLBlogos")
+The `logoInfo` function allows you to select images from the installed `inst/png/` 
+folder. It takes a vector of one or more `teamID` and returns selected
+variables from the `Logos` table. 
 
-# Select an image, use `magick::image_read()` to read it from the installed directory
-imagename <- logoInfo(c("TOR"))[, "png"]
-img <- magick::image_read(file.path(dir, imagename))
+Of these variables, for each `teamID`,
+
+* `name` is the team name
+* `png` is the filename of the logo in the `inst/png/` folder
+* `image` is the filename **path** to the logo in the package.
+
+```{r oneimage, out.width="20%", fig.height=3, fig.align='center', fig.show='asis'}
+
+(toronto <- logoInfo("TOR"))
+
+# Get the filename for the Toronto Blue Jays logo. Read it using `magick::image_read()`
+# and display it.
+imagepath <- toronto[, "image"]
+img <- magick::image_read(imagepath)
 print(img)
 ```
 
+### All logos
 Here are all the logos, retrieved from the `inst/png` folder of the source package.
 For this document they are displayed using HTML `<img >` tags.
 (Except that in a GitHub document they are displayed one-by-one, rather than in an
-array.)
+array. I cheated a bit and took a screenshot of how it appears in the R Studio HTML file.)
 ```{r allimages, echo=TRUE, eval=FALSE}
 library(glue)
 glue("<img src='", "inst/png/", "{Logos[,'png']}' alt='{Logos[,'teamID']}' height=80 />")
@@ -123,20 +137,24 @@ teamSalaries <- teamSalaries |>
   select(teamID, name, Salary, divID, img)
 ```
 
-Construct the bar plot:
+Construct the bar plot. It took a bit of fiddling to size and position the logos within the
+bars.
 ```{r salary-bars, out.width="80%"}
 ggplot(teamSalaries,
        aes(teamID, Salary)) +
   geom_col(aes(fill=divID)) +
   scale_y_continuous(labels = scales::label_number(suffix = " M",
                                                    scale = 1e-6)) +  # millions
-  geom_image(aes(image=img, y = Salary),
-             size=0.09) +
-  ylab("Total Salary (million $)") +
+  scale_fill_discrete(
+    labels = c("Central", "East", "West")
+    ) +
+  geom_image(aes(image=img, y = .6 *Salary),
+             size=0.08) +
+  labs(y = "Total Salary",
+       fill = "Division") +
   coord_flip() +
   theme_bw(base_size=16) +
   theme(legend.position = c(.9, .2))
-
 ```
 
 ### Scatterplots

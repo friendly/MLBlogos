@@ -2,19 +2,28 @@
 % Please edit documentation in R/logoInfo.R
 \name{logoInfo}
 \alias{logoInfo}
-\title{Get logo information for a teams}
+\title{Get logo information for one or more teams}
 \usage{
 logoInfo(teams)
 }
 \arguments{
-\item{teams}{A character vector of one or more \code{TeamID}s}
+\item{teams}{A character vector of one or more \code{TeamID}s. If missing, all teams are returned.
+Values of \code{teams} that do not appear in \code{Logos} are silently ignored in
+this version.}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{ A data.frame with columns `teamID`, `name`, `png` and `image`
+\if{html}{\out{<div class="sourceCode">}}\preformatted{ A data.frame with columns `teamID`, `name`, `png` and `image` and rows matching
+         the `teams`.
 }\if{html}{\out{</div>}}
 }
 \description{
-Get logo information for a teams
+This uses the \code{Logos} data set in the package to select the rows corresponding
+to the \code{teams} argument.
+}
+\details{
+In the result, \code{png} is the internal filename of the PNG file in the package, in the \code{inst/pkg}
+directory. \code{image} is the full path to that image in the installed package, which is most
+useful in applications.
 }
 \examples{
 logoInfo(c("TOR", "TEX"))

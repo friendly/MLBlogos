@@ -29,9 +29,13 @@ ggplot(teamSalaries,
   geom_col(aes(fill=divID)) +
   scale_y_continuous(labels = scales::label_number(suffix = " M",
                                                    scale = 1e-6)) +  # millions
-  geom_image(aes(image=img, y = Salary),
-             size=0.09) +
-  ylab("Total Salary") +
+  scale_fill_discrete(
+    labels = c("Central", "East", "West")
+    ) +
+  geom_image(aes(image=img, y = .6 *Salary),
+             size=0.08) +
+  labs(y = "Total Salary",
+       fill = "Division") +
   coord_flip() +
   theme_bw(base_size=16) +
   theme(legend.position = c(.9, .2))
