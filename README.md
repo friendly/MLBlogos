@@ -1,3 +1,5 @@
+README
+================
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -9,7 +11,7 @@
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-The MLBlogos package provids small (150 x 100) logos for the teams in
+The MLBlogos package provides small (150 x 100) logos for the teams in
 Major League Baseball (from the 2021 season). A possible use is to
 create tables and graphs of Teams data from the [Lahman
 package](https://github.com/cdalzell/Lahman).
@@ -17,26 +19,27 @@ package](https://github.com/cdalzell/Lahman).
 ## Installation
 
 You can install the development version of MLBlogos from
-[GitHub](https://github.com/) with:
+[GitHub](https://github.com/friendly/MLBlogos) with:
 
 ``` r
 # install.packages("devtools")
 devtools::install_github("friendly/MLBlogos")
 ```
 
-## Example
+## Examples
 
 This is a basic example which shows how to access information about the
 logos and the images themselves.
+
+Information about the logos is contained in the `Logos` data set. The
+file name of each logo (in PNG format) is contained in the `png`
+variable. `TeamID` is the matching variable in the `Lahman::Teams`
+dataset.
 
 ``` r
 library(MLBlogos)
 data(Logos)
 library(dplyr)
-
-## Information about the logos is contained in the `Logos` data set. The file
-## name of each logo (in PNG format) is contained in the `png` variable.
-## `TeamID` is the matching variable in `Lahman::Teams`.
 
 data(Logos)
 knitr::kable(Logos[c(1:5, 26:30), 1:5])
@@ -72,8 +75,8 @@ print(img)
 
 Here are all the logos, retrieved from the `inst/png` folder of the
 source package. For this document they are displayed using HTML `<img >`
-tags. (Except that in a GitHub they are displayed one-by-one, rather
-than in an array)
+tags. (Except that in a GitHub document they are displayed one-by-one,
+rather than in an array.)
 
 ``` r
 library(glue)
@@ -84,9 +87,11 @@ glue("<img src='", "inst/png/", "{Logos[,'png']}' alt='{Logos[,'teamID']}' heigh
 
 ## Using logos in graphics
 
-This example shows how to use these logos in
-`ggplot2 graphics. It creates a simple bar plot of total team salaries for the 2016 season, the last year for which salary data is available. Images are plotted using the`ggimage\`
-package.
+These examples show how to use these logos in `ggplot2` graphics. The
+essential step is to merge (`left_join()`) the data to be plotted with
+the names of the logo images from this package.
+
+Images are plotted using `ggimage::geom_image()`.
 
 Load packages and data
 
@@ -100,10 +105,16 @@ data(Salaries)
 data(Logos)
 ```
 
-Select teams in the National League
+### Bar charts
+
+Create a simple bar plot of total team salaries for the 2016 season, the
+last year for which salary data is available.
+
+Select teams in the American League to avoid too many bars. For this
+example, reorder the teamIDs by increasing Salary.
 
 ``` r
-# Total team salaries by league, team for 2016 (last year available)
+# Total team salaries by league, team for 2016
 teamSalaries <- Salaries |>
   filter(yearID == max(yearID),
          lgID == "AL") |>
@@ -134,10 +145,80 @@ ggplot(teamSalaries,
                                                    scale = 1e-6)) +  # millions
   geom_image(aes(image=img, y = Salary),
              size=0.09) +
-  ylab("Total Salary (million $") +
+  ylab("Total Salary (million $)") +
   coord_flip() +
   theme_bw(base_size=16) +
   theme(legend.position = c(.9, .2))
 ```
 
 <img src="man/figures/README-salary-bars-1.png" width="80%" />
+
+### Scatterplots
+
+Plot the number of team wins against home runs and attendance.
+
+``` r
+data(Teams, package="Lahman")
+
+# ------------------------------------------
+# get Xs and wins for most recent year, 2021
+# ------------------------------------------
+teamdata <- Teams |>
+  filter(yearID == max(yearID)) |>
+  select(teamID, HR, W, attendance)
+
+# ------------------------------------------
+# get the logo for each team
+# ------------------------------------------
+teamdata <- teamdata |>
+  left_join(Logos, by="teamID") |>
+  mutate(img = system.file(glue::glue("png/{png}"),
+                           package = "MLBlogos")) |>
+  select(teamID, divID, HR, W, attendance, img)
+```
+
+Home runs and wins. We would expect a positive relationship.
+
+``` r
+# ------------------------------------------
+# plot home runs and wins
+# ------------------------------------------
+ggplot(data=teamdata,
+       aes(x = HR, y=W)) +
+  geom_point() +
+  geom_smooth(method = "loess", formula = y~x, se = FALSE) +
+  geom_image(aes(image=img, x = HR, y = W),
+             size=0.05) +
+  labs(x = "Home Runs",
+       y = "wins") +
+  theme_bw(base_size = 16)
+```
+
+<img src="man/figures/README-W-HR-1.png" width="80%" />
+
+Attendance and wins. The overall relationship is mildly positive, but
+there are some large outliers.
+
+``` r
+# ------------------------------------------
+# plot attendance and wins
+# ------------------------------------------
+ggplot(data=teamdata,
+       aes(x = attendance, y=W)) +
+  geom_point() +
+  geom_smooth(method = "loess", formula = y~x, se = FALSE) +
+  geom_image(aes(image=img, x = attendance, y = W),
+             size=0.05) +
+  scale_x_continuous(labels = scales::label_number(suffix = " K",
+                                                   scale = 1e-3)) +
+  labs(x = "Attendance",
+       y = "wins") +
+  theme_bw(base_size = 16)
+```
+
+<img src="man/figures/README-W-attendance-1.png" width="80%" />
+
+## Technical note
+
+The PNG images do not have a transparent background, so appear best in
+graphs with a white background.

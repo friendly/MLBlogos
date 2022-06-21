@@ -11,20 +11,22 @@
 #' @param teams A character vector of one or more `TeamID`s
 #' @return      A data.frame with columns `teamID`, `name`, `png`
 #' @export
-#' # @importFrom dplyr filter select
-#' # @importFrom utils globalVariables
 #'
 #' @examples
 #' logoInfo(c("TOR", "TEX"))
 #'
 logoInfo <- function(teams) {
   Logos <- .get.logos()
+  # dplyr doesn't work here in R CMD check - variables considered global
   # utils::globalVariables(c("teamID", "name", "png"), add=FALSE)
   # info <- Logos |>
   #   dplyr::filter(teamID %in% teams) |>
   #   dplyr::select(teamID, name, png)
   info <- Logos["teamID" %in% teams, ]
+#  browser()
   info <- info[, c("teamID", "name", "png")]
+  dir <- system.file("png/", package = "MLBlogos")
+  info$image <- paste0(dir, info[, "png"])
   info
 }
 
@@ -42,7 +44,7 @@ logoInfo <- function(teams) {
 #'
 get_logo <- function(teams) {
   images <- logoInfo(teams)
-  if (nrow(images) == 0) stop("No teamIDs found")
+#  if (nrow(images) == 0) stop("No teamIDs found")
   png <- images[,"png"]
   dir <- system.file("png/", package = "MLBlogos")
   magick::image_read(file.path(dir, png))
