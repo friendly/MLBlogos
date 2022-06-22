@@ -93,7 +93,7 @@ print(img)
 #> # A tibble: 1 x 7
 #>   format width height colorspace matte filesize density
 #>   <chr>  <int>  <int> <chr>      <lgl>    <int> <chr>  
-#> 1 PNG      150    100 sRGB       TRUE      5750 38x38
+#> 1 PNG      150    100 sRGB       TRUE      9588 72x72
 ```
 
 <img src="man/figures/README-oneimage-1.png" width="20%" style="display: block; margin: auto;" />
@@ -219,7 +219,7 @@ Home runs and wins. We would expect a positive relationship.
 ggplot(data=teamdata,
        aes(x = HR, y=W)) +
   geom_point() +
-  geom_smooth(method = "loess", formula = y~x, se = FALSE) +
+  geom_smooth(method = "loess", formula = y~x, se = FALSE, size = 2) +
   geom_image(aes(image=img, x = HR, y = W),
              size=0.05) +
   labs(x = "Home Runs",
@@ -239,7 +239,7 @@ there are some large outliers.
 ggplot(data=teamdata,
        aes(x = attendance, y=W)) +
   geom_point() +
-  geom_smooth(method = "loess", formula = y~x, se = FALSE) +
+  geom_smooth(method = "loess", formula = y~x, se = FALSE, size = 2) +
   geom_image(aes(image=img, x = attendance, y = W),
              size=0.05) +
   scale_x_continuous(labels = scales::label_number(suffix = " K",

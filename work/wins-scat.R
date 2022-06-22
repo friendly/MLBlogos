@@ -29,11 +29,11 @@ teamdata <- teamdata |>
 ggplot(data=teamdata,
        aes(x = HR, y=W)) +
   geom_point() +
-  geom_smooth(method = "loess", formula = y~x, se = FALSE) +
+  geom_smooth(method = "loess", formula = y~x, se = FALSE, size=2) +
   geom_image(aes(image=img, x = HR, y = W),
              size=0.05) +
   labs(x = "Home Runs",
-       y = "wins") +
+       y = "wins") #
   theme_bw(base_size = 16)
 
 

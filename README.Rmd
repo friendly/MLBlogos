@@ -193,7 +193,7 @@ Home runs and wins. We would expect a positive relationship.
 ggplot(data=teamdata,
        aes(x = HR, y=W)) +
   geom_point() +
-  geom_smooth(method = "loess", formula = y~x, se = FALSE) +
+  geom_smooth(method = "loess", formula = y~x, se = FALSE, size = 2) +
   geom_image(aes(image=img, x = HR, y = W),
              size=0.05) +
   labs(x = "Home Runs",
@@ -211,7 +211,7 @@ large outliers.
 ggplot(data=teamdata,
        aes(x = attendance, y=W)) +
   geom_point() +
-  geom_smooth(method = "loess", formula = y~x, se = FALSE) +
+  geom_smooth(method = "loess", formula = y~x, se = FALSE, size = 2) +
   geom_image(aes(image=img, x = attendance, y = W),
              size=0.05) +
   scale_x_continuous(labels = scales::label_number(suffix = " K",
