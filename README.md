@@ -3,7 +3,7 @@ README
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# MLBlogos
+# MLBlogos <img src="man/figures/MLBlogos_hex.png" align="right" height="200px" />
 
 Version 0.0.2
 
