@@ -67,13 +67,15 @@ knitr::kable(Logos[c(1:5, 26:30), 1:5])
 
 ### Retrieving logos
 
-The `logoInfo` function allows you to select images from the installed
-`inst/png/` folder. It takes a vector of one or more `teamID` and
+The `logoInfo()` function allows you to select images from the installed
+`inst/png/` folder. It takes a vector of one or more `teamID`s and
 returns selected variables from the `Logos` table.
 
 Of these variables, for each `teamID`,
 
 -   `name` is the team name
+-   `lgID` and `divID` are the league (`AL` and `NL`) and division (`C`,
+    `E`, `W`) ID codes.
 -   `img` is the filename of the logo in the `inst/png/` folder
 -   `image` is the filename **path** to the logo in the package.
 
@@ -140,8 +142,8 @@ data(Logos)
 Create a simple bar plot of total team salaries for the 2016 season, the
 last year for which salary data is available.
 
-Select teams in the American League to avoid too many bars. For this
-example, reorder the teamIDs by increasing Salary.
+In this example, I select teams in the American League to avoid too many
+bars. I also reorder the `teamID`s by increasing Salary.
 
 ``` r
 # Total team salaries by league, team for 2016
@@ -155,7 +157,9 @@ teamSalaries <- Salaries |>
   mutate(teamID = factor(teamID, levels = unique(teamID)))
 ```
 
-Get the name of the logo image file for each team:
+Get the file path of the logo image file for each team using
+`system.file()` to find the `img` filenames in the `png` directory of
+the package.
 
 ``` r
 teamSalaries <- teamSalaries |>
@@ -212,7 +216,8 @@ teamdata <- teamdata |>
   select(teamID, divID, HR, W, attendance, img)
 ```
 
-Home runs and wins. We would expect a positive relationship.
+Home runs and wins. We would expect a positive relationship, and it is
+largely linear.
 
 ``` r
 # ------------------------------------------
@@ -255,5 +260,6 @@ ggplot(data=teamdata,
 
 ## Technical note
 
-The PNG images do not have a completely transparent background, so
-appear best in graphs with a white background.
+In spite of some massaging with the `magick` package, the PNG images do
+not have a completely transparent background, so appear best in graphs
+with a white background. You can see this effect in the bar plot above.
