@@ -19,7 +19,7 @@ teamSalaries <- Salaries |>
 # get the logo for each team
 teamSalaries <- teamSalaries |>
   left_join(Logos, by="teamID") |>
-  mutate(img = system.file(glue::glue("png/{png}"),
+  mutate(img = system.file(glue::glue("png/{img}"),
                            package = "MLBlogos")) |>
   select(teamID, name, Salary, divID, img)
 

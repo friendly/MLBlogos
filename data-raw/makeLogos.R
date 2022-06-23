@@ -10,7 +10,7 @@ file <- here("data-raw", "MLB-logos/www.sportslogos.net_teams_2021.htm")
 html <- read_html(file)
 
 #' extract the img tags
-img <- html |>
+img_src <- html |>
   html_elements("img") |>
   html_attr("src")
 
@@ -20,8 +20,8 @@ team <- html |> html_nodes("a") |>
   str_replace("[\\r\\n\\t ]*", "") |>
   str_replace("\\t*", "")
 
-png <- list.files("png")
-Logos <- data.frame(name = team, png, img_src = img)
+img <- list.files("png")
+Logos <- data.frame(name = team, img, img_src = img_src)
 head(Logos)
 
 

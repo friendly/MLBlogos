@@ -12,7 +12,7 @@ Values of \code{teams} that do not appear in \code{Logos} are silently ignored i
 this version.}
 }
 \value{
-\if{html}{\out{<div class="sourceCode">}}\preformatted{ A data.frame with columns `teamID`, `name`, `png` and `image` and rows matching
+\if{html}{\out{<div class="sourceCode">}}\preformatted{ A data.frame with columns `teamID`, `name`, `img` and `image` and rows matching
          the `teams`.
 }\if{html}{\out{</div>}}
 }
@@ -21,7 +21,7 @@ This uses the \code{Logos} data set in the package to select the rows correspond
 to the \code{teams} argument.
 }
 \details{
-In the result, \code{png} is the internal filename of the PNG file in the package, in the \code{inst/pkg}
+In the result, \code{img} is the internal filename of the PNG file in the package, in the \code{inst/pkg}
 directory. \code{image} is the full path to that image in the installed package, which is most
 useful in applications.
 }

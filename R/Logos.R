@@ -21,7 +21,7 @@
 #'   \item{\code{lgID}}{League: a factor with levels \code{AL}, \code{NL}}
 #'   \item{\code{divID}}{Division: a factor with levels \code{C} \code{E} \code{W}}
 #'   \item{\code{name}}{Team name: a character vector}
-#'   \item{\code{png}}{filename of the PNG logo image in the \code{png} directory, a character vector}
+#'   \item{\code{img}}{filename of the PNG logo image in the \code{png} directory, a character vector}
 #'   \item{\code{img_src}}{original URL of the GIF file from sportslogos.net, a character vector}
 #'   }
 #' @references %% ~~ possibly secondary sources and usages ~~

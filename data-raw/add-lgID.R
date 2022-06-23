@@ -16,3 +16,11 @@ Logos <- Logos |>
 str(Logos)
 
 save(Logos, file="data/Logos.RData")
+
+# rename png -> img; png as a variable causes too many problems
+data(Logos)
+Logos <- Logos |>
+  rename(img = png)
+
+save(Logos, file="data/Logos.RData")
+

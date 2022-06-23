@@ -11,14 +11,14 @@
 #' This uses the `Logos` data set in the package to select the rows corresponding
 #' to the `teams` argument.
 #'
-#' In the result, `png` is the internal filename of the PNG file in the package, in the `inst/pkg`
+#' In the result, `img` is the internal filename of the PNG file in the package, in the `inst/pkg`
 #' directory. `image` is the full path to that image in the installed package, which is most
 #' useful in applications.
 #'
 #' @param teams A character vector of one or more `TeamID`s. If missing, all teams are returned.
 #'              Values of `teams` that do not appear in `Logos` are silently ignored in
 #'              this version.
-#' @return      A data.frame with columns `teamID`, `name`, `png` and `image` and rows matching
+#' @return      A data.frame with columns `teamID`, `name`, `img` and `image` and rows matching
 #'              the `teams`.
 #' @export
 #'
@@ -43,10 +43,10 @@ logoInfo <- function(teams) {
   else
     Logos
 
-  info <- info[, c("teamID", "name", "png")]
+  info <- info[, c("teamID", "name", "img")]
   # find the corresponding image files in the package
   dir <- system.file("png/", package = "MLBlogos")
-  info$image <- file.path(dir, info[, "png"])
+  info$image <- file.path(dir, info[, "img"])
   info
 }
 
