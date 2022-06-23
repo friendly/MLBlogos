@@ -1,6 +1,6 @@
 Package: MLBlogos
 Title: Logos for the Major Leagues Baseball Teams in the 2021 Season
-Version: 0.0.1
+Version: 0.0.2
 Authors@R: 
     person(given ="Michael", 
            family = "Friendly",

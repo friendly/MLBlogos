@@ -5,6 +5,8 @@ README
 
 # MLBlogos
 
+Version 0.0.2
+
 <!-- badges: start -->
 
 [![Lifecycle:
@@ -37,7 +39,7 @@ This is a basic example which shows how to access information about the
 logos and the images themselves.
 
 Information about the logos is contained in the `Logos` data set. The
-file name of each logo (in PNG format) is contained in the `png`
+file name of each logo (in PNG format) is contained in the `img`
 variable. `TeamID` is the matching variable in the `Lahman::Teams`
 dataset.
 
@@ -50,7 +52,7 @@ data(Logos)
 knitr::kable(Logos[c(1:5, 26:30), 1:5])
 ```
 
-|     | teamID | lgID | divID | name                 | png                      |
+|     | teamID | lgID | divID | name                 | img                      |
 |:----|:-------|:-----|:------|:---------------------|:-------------------------|
 | 1   | ARI    | NL   | W     | Arizona Diamondbacks | Arizona_Diamondbacks.png |
 | 2   | ATL    | NL   | E     | Atlanta Braves       | Atlanta_Braves.png       |
@@ -72,7 +74,7 @@ returns selected variables from the `Logos` table.
 Of these variables, for each `teamID`,
 
 -   `name` is the team name
--   `png` is the filename of the logo in the `inst/png/` folder
+-   `img` is the filename of the logo in the `inst/png/` folder
 -   `image` is the filename **path** to the logo in the package.
 
 The actual image can be retrieved using `magick::image_read()` or
@@ -80,7 +82,7 @@ The actual image can be retrieved using `magick::image_read()` or
 
 ``` r
 (toronto <- logoInfo("TOR"))
-#>    teamID              name                   png
+#>    teamID              name                   img
 #> 29    TOR Toronto Blue Jays Toronto_Blue_Jays.png
 #>                                                      image
 #> 29 C:/R/R-4.1.2/library/MLBlogos/png/Toronto_Blue_Jays.png
@@ -93,7 +95,7 @@ print(img)
 #> # A tibble: 1 x 7
 #>   format width height colorspace matte filesize density
 #>   <chr>  <int>  <int> <chr>      <lgl>    <int> <chr>  
-#> 1 PNG      150    100 sRGB       TRUE      9588 72x72
+#> 1 PNG      150    100 sRGB       TRUE      3599 38x38
 ```
 
 <img src="man/figures/README-oneimage-1.png" width="20%" style="display: block; margin: auto;" />
@@ -108,7 +110,7 @@ appears in the R Studio HTML file.)
 
 ``` r
 library(glue)
-glue("<img src='", "inst/png/", "{Logos[,'png']}' alt='{Logos[,'teamID']}' height=80 />")
+glue("<img src='", "inst/png/", "{Logos[,'img']}' alt='{Logos[,'teamID']}' height=80 />")
 ```
 
 ![](man/figures/README-allimages.png)
@@ -158,7 +160,7 @@ Get the name of the logo image file for each team:
 ``` r
 teamSalaries <- teamSalaries |>
   left_join(Logos, by="teamID") |>
-  mutate(img = system.file(glue::glue("png/{png}"),
+  mutate(img = system.file(glue::glue("png/{img}"),
                            package = "MLBlogos")) |>
   select(teamID, name, Salary, divID, img)
 ```
@@ -205,7 +207,7 @@ teamdata <- Teams |>
 # ------------------------------------------
 teamdata <- teamdata |>
   left_join(Logos, by="teamID") |>
-  mutate(img = system.file(glue::glue("png/{png}"),
+  mutate(img = system.file(glue::glue("png/{img}"),
                            package = "MLBlogos")) |>
   select(teamID, divID, HR, W, attendance, img)
 ```
