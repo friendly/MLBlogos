@@ -255,5 +255,5 @@ ggplot(data=teamdata,
 
 ## Technical note
 
-The PNG images do not have a transparent background, so appear best in
-graphs with a white background.
+The PNG images do not have a completely transparent background, so
+appear best in graphs with a white background.
